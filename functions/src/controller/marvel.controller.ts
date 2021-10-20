@@ -1,8 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { fs } from "../config/firestore";
 import { RequestDialog } from "../types/dialogflow.types";
 
-export const getVerify = async (req: Request, res: Response) => {
+export const getVerify = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const body: RequestDialog = req.body;
 
   const parametrs = body.queryResult.parameters;
@@ -11,34 +15,23 @@ export const getVerify = async (req: Request, res: Response) => {
 
   const data = await fs.collection("users").doc(email).get();
 
-  if (!data.exists) {
-    const createUser = async () => {
-      await fs
-        .collection("users")
-        .doc(email)
-        .set({
-          email: email,
-          nome: name,
-        })
-        .then(() => {
-          return res.status(201).send({
-            followupEventInput: {
-              name: "userVerify",
-              languageCode: "pt-BR",
-              parameters: {
-                name: name,
-                isNew: false,
-                isVerify: true,
-              },
-            },
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
+  const createUser = (name: string, email: string) => {
+    fs.collection("users")
+      .doc(email)
+      .set({
+        email: email,
+        nome: name,
+      })
+      .then((doc) => {
+        return doc;
+      })
+      .catch((error) => {
+        return error;
+      });
+  };
 
-    createUser();
+  if (!data.exists) {
+    createUser(name, email);
   }
 
   try {
@@ -59,7 +52,5 @@ export const getVerify = async (req: Request, res: Response) => {
     });
   }
 
-  // return res.status(500).send({
-  //   error: "Error",
-  // });
+  next();
 };
