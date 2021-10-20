@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+
 import { fs } from "../config/firestore";
 import { RequestDialog } from "../types/dialogflow.types";
 
@@ -23,6 +24,7 @@ export const getVerify = async (
         nome: name,
       })
       .then((doc) => {
+        console.log("Create User: ", email);
         return doc;
       })
       .catch((error) => {

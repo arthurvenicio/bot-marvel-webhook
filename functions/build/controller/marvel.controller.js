@@ -16,6 +16,7 @@ exports.getVerify = async (req, res, next) => {
             nome: name,
         })
             .then((doc) => {
+            console.log("Create User: ", email);
             return doc;
         })
             .catch((error) => {

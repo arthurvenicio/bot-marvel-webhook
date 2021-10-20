@@ -8,5 +8,5 @@ typings/
 # Node.js dependency directory
 node_modules/
 
-build
+build/
 build/**/*.js.map
