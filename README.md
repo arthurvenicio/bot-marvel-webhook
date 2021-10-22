@@ -2,6 +2,8 @@
 
 A ideia foi construir um bot com dialogflow es que seria de uma loja de quadrinhos, usando como base a [Jim Hanley’s Universe](http://jhucomicbooks.com/) uma loja de quadrinhos localizada em New York;
 
+A principal funcionalidade deste Webhook é captar o nome e email fornecidos no dialogo e armazenar no firestore para um possível relatório.
+
 ## Como começar
 
 Primeiro clone este projeto utilizando o:
